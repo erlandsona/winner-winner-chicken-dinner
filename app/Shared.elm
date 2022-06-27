@@ -3,7 +3,8 @@ module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 import DataSource
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Events
+import Html.Attributes as Attr
+import Icon
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)
@@ -19,13 +20,17 @@ template =
     , view = view
     , data = data
     , subscriptions = subscriptions
-    , onPageChange = Nothing
+    , onPageChange = Just OnPageChange
     }
 
 
 type Msg
-    = SharedMsg SharedMsg
-    | MenuClicked
+    = OnPageChange
+        { path : Path
+        , query : Maybe String
+        , fragment : Maybe String
+        }
+    | SharedMsg SharedMsg
 
 
 type alias Data =
@@ -37,7 +42,7 @@ type SharedMsg
 
 
 type alias Model =
-    { showMenu : Bool
+    { showMobileMenu : Bool
     }
 
 
@@ -55,7 +60,7 @@ init :
             }
     -> ( Model, Effect Msg )
 init flags maybePagePath =
-    ( { showMenu = False }
+    ( { showMobileMenu = False }
     , Effect.none
     )
 
@@ -63,11 +68,11 @@ init flags maybePagePath =
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
+        OnPageChange _ ->
+            ( { model | showMobileMenu = False }, Effect.none )
+
         SharedMsg globalMsg ->
             ( model, Effect.none )
-
-        MenuClicked ->
-            ( { model | showMenu = not model.showMenu }, Effect.none )
 
 
 subscriptions : Path -> Model -> Sub Msg
@@ -92,29 +97,24 @@ view :
     -> { body : Html msg, title : String }
 view sharedData page model toMsg pageView =
     { body =
-        Html.div []
-            [ Html.nav []
-                [ Html.button
-                    [ Html.Events.onClick MenuClicked ]
-                    [ Html.text
-                        (if model.showMenu then
-                            "Close Menu"
-
-                         else
-                            "Open Menu"
-                        )
-                    ]
-                , if model.showMenu then
-                    Html.ul []
-                        [ Html.li [] [ Html.text "Menu item 1" ]
-                        , Html.li [] [ Html.text "Menu item 2" ]
-                        ]
-
-                  else
-                    Html.text ""
+        Html.div
+            []
+            [ Html.nav
+                [ Attr.style "display" "flex"
+                , Attr.style "justify-content" "space-evenly"
                 ]
-                |> Html.map toMsg
-            , Html.main_ [] pageView.body
+                [ Html.span [ Attr.class "icon" ]
+                    [ Html.text " "
+                    , Html.kbd [] [ Html.text "Ctrl" ]
+                    , Html.text "+"
+                    , Html.kbd [] [ Html.text "R" ]
+                    , Html.text " Smoothies"
+                    ]
+                ]
+            , Html.div
+                [ Attr.style "padding" "40px"
+                ]
+                pageView.body
             ]
     , title = pageView.title
     }
