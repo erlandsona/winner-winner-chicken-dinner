@@ -18,6 +18,9 @@
   },
   "author": "Dillon Kearns",
   "license": "BSD-3",
+  "dependencies": {
+    "@prisma/client": "^3.15.2"
+  },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.3",
     "@netlify/functions": "^0.7.2",
