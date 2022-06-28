@@ -1,7 +1,20 @@
-import { prisma } from './prisma/client'
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+  // allow global `var` declarations
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
+}
+
+export const prisma =
+  global.prisma ||
+  new PrismaClient({
+    log: ["query"],
+  });
+
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
 export async function hello(id: string) {
-  const maybeData = prisma.pollQuestion.findFirst({ where: { id: id } })
-  console.log(maybeData)
-  return JSON.stringify(maybeData)
+  const maybeData = await prisma.pollQuestion.findFirst({ where: { id: id } })
+  return maybeData?.question
 }
