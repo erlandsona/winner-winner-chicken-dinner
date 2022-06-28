@@ -1,14 +1,22 @@
 {
-  "name": "elm-pages-example",
+  "name": "winner-winner-chicken-dinner",
   "version": "1.0.0",
-  "description": "Example site built with elm-pages.",
+  "description": "Voting app built on elm-pages",
   "scripts": {
+    "//": "Production Scripts",
+    "serve": "run-s build server",
+    "server": "http-server ./dist -a localhost -p 3000 -c-1",
+    "build": "run-s gen elm",
+    "elm": "elm-pages build --debug --keep-cache",
+
+    "//": "Dev Scripts",
     "start": "elm-pages dev",
-    "serve": "npm run build && http-server ./dist -a localhost -p 3000 -c-1",
-    "prebuild": "npm run generate:graphql",
-    "build": "elm-pages build --debug --keep-cache",
-    "generate:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js",
-    "generate:graphql": "elm-graphql https://smoothie-shop.hasura.app/v1/graphql --header \"x-hasura-admin-secret: $SMOOTHIES_HASURA_SECRET\" --output gen"
+    "build:dev": "env-cmd run-s gen elm",
+
+    "//": "Code Gen",
+    "gen": "run-p gen:graphql gen:tailwind",
+    "gen:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js",
+    "gen:graphql": "elm-graphql https://smoothie-shop.hasura.app/v1/graphql --header \"x-hasura-admin-secret: $SMOOTHIES_HASURA_SECRET\" --output gen"
   },
   "author": "Dillon Kearns",
   "license": "BSD-3",
@@ -22,6 +30,8 @@
     "elm-review": "^2.7.0",
     "elm-tailwind-modules": "^0.3.2",
     "elm-tooling": "^1.3.0",
+    "env-cmd": "^10.1.0",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.5",
     "tailwindcss": "^2.2.19"
   }
