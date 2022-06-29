@@ -4,7 +4,6 @@ import DataSource
 import Effect exposing (Effect)
 import Html exposing (Html)
 import Html.Attributes as Attr
-import Icon
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
 import Path exposing (Path)

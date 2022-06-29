@@ -38,7 +38,7 @@ withSessionOrRedirect handler toRequest =
                 |> Result.withDefault
                     (DataSource.succeed
                         ( Session.empty
-                        , Route.redirectTo Route.Login
+                        , Route.redirectTo Route.Index
                         )
                     )
         )
@@ -62,7 +62,7 @@ expectSessionOrRedirect toRequest handler =
                 |> Maybe.withDefault
                     (DataSource.succeed
                         ( Session.empty
-                        , Route.redirectTo Route.Login
+                        , Route.redirectTo Route.Index
                         )
                     )
         )
@@ -84,7 +84,7 @@ expectSessionDataOrRedirect parseSessionData handler toRequest =
                     Nothing ->
                         DataSource.succeed
                             ( session
-                            , Route.redirectTo Route.Login
+                            , Route.redirectTo Route.Index
                             )
             )
 

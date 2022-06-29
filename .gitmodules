@@ -1,5 +1,5 @@
 [submodule "elm-pages"]
 	path = elm-pages
 	url = https://github.com/dillonkearns/elm-pages
-  branch = form-prototype
+  branch = serverless-latest
 

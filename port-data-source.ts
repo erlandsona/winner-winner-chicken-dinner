@@ -14,7 +14,11 @@ export const prisma =
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
-export async function hello(id: string) {
+export async function questions_index() {
+  return await prisma.pollQuestion.findMany()
+}
+
+export async function questions_show(id: string) {
   const maybeData = await prisma.pollQuestion.findFirst({ where: { id: id } })
-  return maybeData?.question
+  return (maybeData || null)
 }

@@ -88,10 +88,12 @@ type alias ActionData =
 
 data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
 data routeParams =
-    -- TODO: How do / should(?) we handle HTTP status codes?
     Request.succeed
-        (Port.get "hello" (Encode.string routeParams.id) Decode.string
-            |> DataSource.map Response.render
+        (Port.get "hello" (Encode.string routeParams.id) (Decode.maybe Decode.string)
+            |> DataSource.map
+                (Maybe.map Response.render
+                    >> Maybe.withDefault (Response.errorPage ErrorPage.notFound)
+                )
         )
 
 
