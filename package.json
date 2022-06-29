@@ -13,7 +13,7 @@
     "build:dev": "env-cmd run-s gen elm",
     "elm:dev": "elm-pages dev --port 7373",
     "// Code Gen": null,
-    "gen": "run-p gen:prisma gen:graphql gen:tailwind",
+    "gen": "run-p gen:prisma gen:tailwind",
     "gen:prisma": "prisma generate",
     "gen:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js",
     "gen:graphql": "elm-graphql https://smoothie-shop.hasura.app/v1/graphql --header \"x-hasura-admin-secret: $SMOOTHIES_HASURA_SECRET\" --output gen"

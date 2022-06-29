@@ -8,3 +8,6 @@
   targetPort = 1234
   autoLaunch = true
   framework = "#custom"
+
+[functions]
+  external_node_modules = ["@prisma/client"]
