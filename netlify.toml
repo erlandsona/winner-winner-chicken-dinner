@@ -5,7 +5,7 @@
 
 [dev]
   command = "npm start"
-  targetPort = 1234
+  targetPort = 7373
   autoLaunch = true
   framework = "#custom"
 

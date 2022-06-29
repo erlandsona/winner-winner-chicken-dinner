@@ -15,13 +15,13 @@
     "// Code Gen": null,
     "gen": "run-p gen:prisma gen:tailwind",
     "gen:prisma": "prisma generate",
-    "gen:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js",
-    "gen:graphql": "elm-graphql https://smoothie-shop.hasura.app/v1/graphql --header \"x-hasura-admin-secret: $SMOOTHIES_HASURA_SECRET\" --output gen"
+    "gen:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js"
   },
   "author": "Dillon Kearns",
   "license": "BSD-3",
   "dependencies": {
-    "@prisma/client": "^4.0.0"
+    "@prisma/client": "^4.0.0",
+    "@prisma/engines-version": "^4.1.0-2.46cd7ed225f7eb084fb5035de2e89efce45aab93"
   },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.3",

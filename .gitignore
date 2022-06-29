@@ -7,3 +7,4 @@ functions/server-render
 .idea
 .env
 gen
+.netlify/
