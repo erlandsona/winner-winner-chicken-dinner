@@ -1,4 +1,4 @@
-module Route.Hello exposing (ActionData, Data, Model, Msg, route)
+module Route.Hello.Id_ exposing (ActionData, Data, Model, Msg, route)
 
 import DataSource exposing (DataSource)
 import DataSource.Port as Port
@@ -28,7 +28,7 @@ type Msg
 
 
 type alias RouteParams =
-    {}
+    { id : String }
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -73,6 +73,11 @@ subscriptions maybePageUrl routeParams path sharedModel model =
     Sub.none
 
 
+pages : DataSource (List RouteParams)
+pages =
+    DataSource.succeed []
+
+
 type alias Data =
     String
 
@@ -83,8 +88,9 @@ type alias ActionData =
 
 data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
 data routeParams =
+    -- TODO: How do / should(?) we handle HTTP status codes?
     Request.succeed
-        (Port.get "hello" (Encode.string "Austin") Decode.string
+        (Port.get "hello" (Encode.string routeParams.id) Decode.string
             |> DataSource.map Response.render
         )
 
