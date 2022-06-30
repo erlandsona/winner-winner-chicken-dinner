@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+case $OSTYPE in
+  linux*)
+    OS=linux
+    ;;
+  darwin*)
+    OS=osx
+    ;;
+esac
+
+
+curl https://static.lamdera.com/bin/$OS/lamdera -o bin/lamdera
+chmod a+x bin/lamdera

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Voting app built on elm-pages",
   "scripts": {
+    "postinstall": "bin/install-lamdera",
     "// Production Scripts": null,
     "build": "run-s gen elm",
     "serve": "run-s build server",

@@ -7,3 +7,4 @@ functions/server-render
 .idea
 gen
 .netlify/
+bin/lamdera
