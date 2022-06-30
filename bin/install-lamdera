@@ -13,3 +13,4 @@ esac
 
 curl https://static.lamdera.com/bin/$OS/lamdera -o bin/lamdera
 chmod a+x bin/lamdera
+ln -sf $PWD/bin/lamdera $PWD/node_modules/.bin/

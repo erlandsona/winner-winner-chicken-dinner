@@ -8,7 +8,7 @@
     "build": "run-s gen elm",
     "serve": "run-s build server",
     "server": "http-server ./dist -a localhost -p 3000 -c-1",
-    "elm": "elm-pages build --debug --keep-cache",
+    "elm": "elm-pages build --keep-cache",
     "// Dev Scripts": null,
     "start": "env-cmd run-s gen elm:dev",
     "build:dev": "env-cmd run-s gen elm",
