@@ -7,7 +7,7 @@ case $OSTYPE in
     OS=linux
     # apt-get install -y libtinfo5
     # Vercel needs libtinfo5
-    yum install ncurses-compat-libs -y
+    yum install ncurses-devel -y
     ;;
   darwin*)
     OS=osx
