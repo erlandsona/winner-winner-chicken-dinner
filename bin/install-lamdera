@@ -5,7 +5,7 @@ set -ex
 case $OSTYPE in
   linux*)
     OS=linux
-    sudo apt install libtinfo5
+    apt-get install -y libtinfo5
     ;;
   darwin*)
     OS=osx
