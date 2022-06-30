@@ -10,7 +10,7 @@ case $OSTYPE in
     # yum install ncurses5-compat-libs -y
 
     ls -la /lib
-    ln /lib/libtinfo.so.6 /lib/libtinfo.so.5
+    ln /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
     ;;
   darwin*)
     OS=osx
