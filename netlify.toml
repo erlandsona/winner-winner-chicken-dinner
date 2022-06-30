@@ -10,4 +10,4 @@
   framework = "#custom"
 
 [functions]
-  external_node_modules = ["@prisma/client"]
+  external_node_modules = ["@prisma/client", "@prisma/engines-version", ".prisma/client"]
