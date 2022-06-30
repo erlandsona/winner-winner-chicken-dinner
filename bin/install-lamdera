@@ -9,8 +9,8 @@ case $OSTYPE in
     # Vercel needs libtinfo5
     # yum install ncurses5-compat-libs -y
 
-    ls -la /lib
-    ln /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
+    ls -la /usr/lib
+    link /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
     ;;
   darwin*)
     OS=osx
