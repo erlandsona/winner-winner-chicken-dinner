@@ -5,6 +5,5 @@ dist/
 functions/render
 functions/server-render
 .idea
-.env
 gen
 .netlify/
