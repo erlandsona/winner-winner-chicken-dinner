@@ -5,7 +5,9 @@ set -ex
 case $OSTYPE in
   linux*)
     OS=linux
-    apt-get install -y libtinfo5
+    # apt-get install -y libtinfo5
+    # Vercel needs libtinfo5
+    yum install libtinfo5 -y
     ;;
   darwin*)
     OS=osx
