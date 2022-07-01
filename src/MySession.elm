@@ -1,6 +1,6 @@
 module MySession exposing (..)
 
-import Codec
+import Codec exposing (Codec)
 import DataSource exposing (DataSource)
 import DataSource.Env as Env
 import Route
@@ -89,6 +89,11 @@ expectSessionDataOrRedirect parseSessionData handler toRequest =
             )
 
 
+schema :
+    { name : ( String, Codec String )
+    , message : ( String, Codec String )
+    , user : ( String, Codec { id : Int } )
+    }
 schema =
     { name = ( "name", Codec.string )
     , message = ( "message", Codec.string )

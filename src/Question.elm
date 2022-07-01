@@ -1,9 +1,10 @@
 module Question exposing (Index, indexDecoder)
 
+-- import Json.Encode as Encode
+-- import Json.Encode.Extra as EncodeX
+
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as DecodeX
-import Json.Encode as Encode
-import Json.Encode.Extra as EncodeX
 import Time
 
 
@@ -17,8 +18,9 @@ type alias Index =
     }
 
 
-type alias IndexOptions =
-    {}
+
+-- type alias IndexOptions =
+--     {}
 
 
 indexDecoder : Decoder Index
@@ -32,12 +34,10 @@ indexDecoder =
         |> DecodeX.andMap (Decode.field "question" Decode.string)
 
 
-indexOptionsDecoder : Decoder IndexOptions
-indexOptionsDecoder =
-    Decode.succeed IndexOptions
 
-
-
+-- indexOptionsDecoder : Decoder IndexOptions
+-- indexOptionsDecoder =
+--     Decode.succeed IndexOptions
 -- encodedIndex : Index -> Encode.Value
 -- encodedIndex index =
 --     Encode.object

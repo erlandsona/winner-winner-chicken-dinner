@@ -14,11 +14,10 @@ import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path exposing (Path)
 import Question
-import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
+import RouteBuilder exposing (StatefulRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
-import Time
 import View exposing (View)
 
 
@@ -101,9 +100,7 @@ action routeParams =
     Request.skip "No action."
 
 
-head :
-    StaticPayload Data ActionData RouteParams
-    -> List Head.Tag
+head : StaticPayload Data ActionData RouteParams -> List Head.Tag
 head static =
     Seo.summary
         { canonicalUrlOverride = Nothing
