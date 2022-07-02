@@ -1,10 +1,11 @@
-import { prisma as db } from './prisma/client'
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient({ log: ["query"] })
 
 export async function questions_index() {
-  return await db.pollQuestion.findMany()
+  return await prisma.pollQuestion.findMany()
 }
 
 export async function questions_show(id: string) {
-  const maybeData = await db.pollQuestion.findFirst({ where: { id: id } })
+  const maybeData = await prisma.pollQuestion.findFirst({ where: { id: id } })
   return (maybeData || null)
 }
