@@ -1,6 +1,9 @@
 // @ts-check
 import fs from "fs";
 
+const cp = fs.copyFileSync;
+const write = fs.writeFileSync;
+
 export default async function run(
   /** @type {import('./adapter-types').AdapterConfig} */
   {
@@ -15,28 +18,13 @@ export default async function run(
   ensureDirSync("functions/render");
   ensureDirSync("functions/server-render");
 
-  fs.copyFileSync(
-    renderFunctionFilePath,
-    "./functions/render/elm-pages-cli.js"
-  );
-  fs.copyFileSync(
-    renderFunctionFilePath,
-    "./functions/server-render/elm-pages-cli.js"
-  );
-  fs.copyFileSync(portsFilePath, "./functions/render/port-data-source.mjs");
-  fs.copyFileSync(
-    portsFilePath,
-    "./functions/server-render/port-data-source.mjs"
-  );
+  cp(renderFunctionFilePath, "./functions/render/elm-pages-cli.js");
+  cp(renderFunctionFilePath, "./functions/server-render/elm-pages-cli.js");
+  cp(portsFilePath, "./functions/render/port-data-source.mjs");
+  cp(portsFilePath, "./functions/server-render/port-data-source.mjs");
 
-  fs.writeFileSync(
-    "./functions/render/index.js",
-    rendererCode(true, htmlTemplate)
-  );
-  fs.writeFileSync(
-    "./functions/server-render/index.js",
-    rendererCode(false, htmlTemplate)
-  );
+  write("./functions/render/index.js", rendererCode(true, htmlTemplate));
+  write("./functions/server-render/index.js", rendererCode(false, htmlTemplate));
   // TODO rename functions/render to functions/fallback-render
   // TODO prepend instead of writing file
 
@@ -79,7 +67,7 @@ ${route.pathPattern}/content.dat /.netlify/functions/server-render 200`;
     apiRouteRedirects +
     "\n";
 
-  fs.writeFileSync("dist/_redirects", redirectsFile);
+  write("dist/_redirects", redirectsFile);
 }
 
 function ensureValidRoutePatternsForNetlify(apiRoutePatterns) {
