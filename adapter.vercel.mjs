@@ -111,8 +111,8 @@ exports.handler = function(event, context) {
 
   const compiledElmPath = path.join(__dirname, "_elm-pages-cli.js");
   const compiledPortsFile = path.join(__dirname, "_port-data-source.mjs");
-  const renderer = require("../elm-pages/generator/src/render");
-  const preRenderHtml = require("../elm-pages/generator/src/pre-render-html");
+  const renderer = require("./_src/render");
+  const preRenderHtml = require("./_src/pre-render-html");
   try {
     const basePath = "/";
     const mode = "build";
