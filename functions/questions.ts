@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({ log: ["query"] })
 
-export default async function handler() {
+export async function handler() {
   try {
     return {
       body: await prisma.pollQuestion.findMany(),
