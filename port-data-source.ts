@@ -1,24 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
-
-declare global {
-  // allow global `var` declarations
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
-
-export const prisma =
-  global.prisma ||
-  new PrismaClient({
-    log: ["query"],
-  });
-
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
+import { prisma as db } from './prisma/client'
 
 export async function questions_index() {
-  return await prisma.pollQuestion.findMany()
+  return await db.pollQuestion.findMany()
 }
 
 export async function questions_show(id: string) {
-  const maybeData = await prisma.pollQuestion.findFirst({ where: { id: id } })
+  const maybeData = await db.pollQuestion.findFirst({ where: { id: id } })
   return (maybeData || null)
 }

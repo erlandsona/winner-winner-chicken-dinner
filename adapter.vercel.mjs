@@ -15,22 +15,22 @@ export default async function run(
   }
 ) {
   console.log("Running adapter script");
-  ensureDirSync("functions/render");
-  ensureDirSync("functions/server-render");
+  ensureDirSync("api");
+  // ensureDirSync("api/server-render");
 
-  cp(renderFunctionFilePath, "./functions/render/elm-pages-cli.js");
-  cp(renderFunctionFilePath, "./functions/server-render/elm-pages-cli.js");
-  cp(portsFilePath, "./functions/render/port-data-source.mjs");
-  cp(portsFilePath, "./functions/server-render/port-data-source.mjs");
+  // cp(renderFunctionFilePath, "./api/render/elm-pages-cli.js");
+  cp(renderFunctionFilePath, "./api/_elm-pages-cli.js");
+  // cp(portsFilePath, "./api/render/port-data-source.mjs");
+  cp(portsFilePath, "./api/_port-data-source.mjs");
 
-  write("./functions/render/index.js", rendererCode(true, htmlTemplate));
-  write("./functions/server-render/index.js", rendererCode(false, htmlTemplate));
+  // write("./api/render/index.js", rendererCode(true, htmlTemplate));
+  write("./api/index.js", rendererCode(false, htmlTemplate));
   // TODO rename functions/render to functions/fallback-render
   // TODO prepend instead of writing file
 
   const apiServerRoutes = apiRoutePatterns.filter(isServerSide);
 
-  ensureValidRoutePatternsForNetlify(apiServerRoutes);
+  // ensureValidRoutePatternsForVercel(apiServerRoutes);
 
   // TODO filter apiRoutePatterns on is server side
   // TODO need information on whether api route is odb or serverless
@@ -39,11 +39,11 @@ export default async function run(
       if (apiRoute.kind === "prerender-with-fallback") {
         return `${apiPatternToRedirectPattern(
           apiRoute.pathPattern
-        )} /.netlify/builders/render 200`;
+        )} /.vercel/builders/render 200`;
       } else if (apiRoute.kind === "serverless") {
         return `${apiPatternToRedirectPattern(
           apiRoute.pathPattern
-        )} /.netlify/functions/server-render 200`;
+        )} /.vercel/functions/server-render 200`;
       } else {
         throw "Unhandled 2";
       }
@@ -55,11 +55,11 @@ export default async function run(
       .filter(isServerSide)
       .map((route) => {
         if (route.kind === "prerender-with-fallback") {
-          return `${route.pathPattern} /.netlify/builders/render 200
-${route.pathPattern}/content.dat /.netlify/builders/render 200`;
+          return `${route.pathPattern} /.vercel/builders/render 200
+${route.pathPattern}/content.dat /.vercel/builders/render 200`;
         } else {
-          return `${route.pathPattern} /.netlify/functions/server-render 200
-${route.pathPattern}/content.dat /.netlify/functions/server-render 200`;
+          return `${route.pathPattern} /.vercel/functions/server-render 200
+${route.pathPattern}/content.dat /.vercel/functions/server-render 200`;
         }
       })
       .join("\n") +
@@ -70,14 +70,14 @@ ${route.pathPattern}/content.dat /.netlify/functions/server-render 200`;
   write("dist/_redirects", redirectsFile);
 }
 
-function ensureValidRoutePatternsForNetlify(apiRoutePatterns) {
-  const invalidNetlifyRoutes = apiRoutePatterns.filter((apiRoute) =>
+function ensureValidRoutePatternsForVercel(apiRoutePatterns) {
+  const invalidVercelRoutes = apiRoutePatterns.filter((apiRoute) =>
     apiRoute.pathPattern.some(({ kind }) => kind === "hybrid")
   );
-  if (invalidNetlifyRoutes.length > 0) {
+  if (invaliVercelRoutes.length > 0) {
     throw (
-      "Invalid Netlify routes!\n" +
-      invalidNetlifyRoutes
+      "Invalid Vercel routes!\n" +
+      invalidVercelRoutes
         .map((value) => JSON.stringify(value, null, 2))
         .join(", ")
     );
@@ -99,30 +99,21 @@ function rendererCode(isOnDemand, htmlTemplate) {
 const busboy = require("busboy");
 const htmlTemplate = ${JSON.stringify(htmlTemplate)};
 
-${
-  isOnDemand
-    ? `const { builder } = require("@netlify/functions");
-
-exports.handler = builder(render);`
-    : `
-
-exports.handler = render;`
-}
-
 
 /**
  * @param {import('aws-lambda').APIGatewayProxyEvent} event
  * @param {any} context
  */
-async function render(event, context) {
+exports.handler = function(event, context) {
+  throw new Error("HEY FROM HANDLER!!!!");
   const requestTime = new Date();
   console.log(JSON.stringify(event));
   global.staticHttpCache = {};
 
-  const compiledElmPath = path.join(__dirname, "elm-pages-cli.js");
-  const compiledPortsFile = path.join(__dirname, "port-data-source.mjs");
-  const renderer = require("../../elm-pages/generator/src/render");
-  const preRenderHtml = require("../../elm-pages/generator/src/pre-render-html");
+  const compiledElmPath = path.join(__dirname, "_elm-pages-cli.js");
+  const compiledPortsFile = path.join(__dirname, "_port-data-source.mjs");
+  const renderer = require("../elm-pages/generator/src/render");
+  const preRenderHtml = require("../elm-pages/generator/src/pre-render-html");
   try {
     const basePath = "/";
     const mode = "build";
@@ -231,7 +222,7 @@ function reqToJson(req, requestTime) {
           resolve(toJsonHelper(req, requestTime, fields));
         });
         console.log('@@@4');
-        
+
         if (req.isBase64Encoded) {
           bb.write(Buffer.from(req.body, 'base64').toString('utf8'));
         } else {

@@ -8,3 +8,5 @@ functions/server-render
 gen
 .netlify/
 bin/lamdera
+.vercel
+api/
