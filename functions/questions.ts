@@ -3,8 +3,9 @@ const prisma = new PrismaClient({ log: ["query"] })
 
 export async function handler() {
   try {
+    const questions = await prisma.pollQuestion.findMany()
     return {
-      body: await prisma.pollQuestion.findMany(),
+      body: JSON.stringify(questions),
       status: 200,
       headers: {
         'Content-Type': 'application/json'
