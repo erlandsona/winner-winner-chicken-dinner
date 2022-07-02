@@ -105,7 +105,6 @@ const htmlTemplate = ${JSON.stringify(htmlTemplate)};
  * @param {any} context
  */
 exports.handler = function(event, context) {
-  throw new Error("HEY FROM HANDLER!!!!");
   const requestTime = new Date();
   console.log(JSON.stringify(event));
   global.staticHttpCache = {};
