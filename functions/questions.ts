@@ -6,14 +6,14 @@ export async function handler() {
     const questions = await prisma.pollQuestion.findMany()
     return {
       body: JSON.stringify(questions),
-      status: 200,
-      headers: {
+      statusCode: 200,
+      header: {
         'Content-Type': 'application/json'
       }
     }
   } catch (e) {
     return {
-      status: 500,
+      statusCode: 500,
       body: JSON.stringify(e)
     }
   }
