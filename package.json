@@ -2,6 +2,7 @@
   "name": "winner-winner-chicken-dinner",
   "version": "1.0.0",
   "description": "Voting app built on elm-pages",
+  "type": "commonjs",
   "scripts": {
     "postinstall": "bin/install-lamdera",
     "// Production Scripts": null,
