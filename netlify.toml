@@ -8,3 +8,6 @@
   targetPort = 7373
   autoLaunch = true
   framework = "#custom"
+
+[functions]
+  external_node_modules = ["elm-pages"]

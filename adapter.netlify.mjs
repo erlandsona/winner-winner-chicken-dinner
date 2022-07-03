@@ -111,8 +111,6 @@ export const handler = render;`
 
 const htmlTemplate = ${JSON.stringify(htmlTemplate)};
 
-const compiledElmPath = path.join(__dirname, "elm-pages-cli.js");
-const compiledPortsFile = path.join(__dirname, "port-data-source.mjs");
 
 /**
  * @param {import('aws-lambda').APIGatewayProxyEvent} event
@@ -122,6 +120,8 @@ async function render(event, context) {
   const requestTime = new Date();
   console.log(JSON.stringify(event));
   global.staticHttpCache = {};
+  const compiledElmPath = path.join(__dirname, "elm-pages-cli.js");
+  const compiledPortsFile = path.join(__dirname, "port-data-source.mjs");
 
   try {
     const basePath = "/";
