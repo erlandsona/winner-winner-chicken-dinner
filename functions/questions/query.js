@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient({ log: ["query"] })
 
-export async function handler() {
+exports.renderer = async function () {
   try {
     const questions = await prisma.pollQuestion.findMany()
     return {
