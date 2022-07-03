@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "mjs",
+    "target": "module",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

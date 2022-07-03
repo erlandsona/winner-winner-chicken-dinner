@@ -11,3 +11,4 @@ bin/lamdera
 .vercel
 api/
 .env
+functions
