@@ -9,5 +9,5 @@
   autoLaunch = true
   framework = "#custom"
 
-[functions]
-  external_node_modules = ["@prisma/client", "@prisma/engines-version", ".prisma/client"]
+# [functions]
+#   external_node_modules = ["@prisma/client", "@prisma/engines-version", ".prisma/client"]
