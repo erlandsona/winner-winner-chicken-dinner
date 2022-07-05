@@ -1,30 +1,38 @@
-// @ts-check
 import fs from "fs";
 
-const cp = fs.copyFileSync;
-const write = fs.writeFileSync;
-
-export default async function run(
-  /** @type {import('./adapter-types').AdapterConfig} */
-  {
-    renderFunctionFilePath,
-    routePatterns,
-    apiRoutePatterns,
-    portsFilePath,
-    htmlTemplate,
-  }
-) {
+export default async function run({
+  renderFunctionFilePath,
+  routePatterns,
+  apiRoutePatterns,
+  portsFilePath,
+  htmlTemplate,
+}) {
   console.log("Running adapter script");
   ensureDirSync("functions/render");
   ensureDirSync("functions/server-render");
 
-  cp(renderFunctionFilePath, "./functions/render/elm-pages-cli.js");
-  cp(renderFunctionFilePath, "./functions/server-render/elm-pages-cli.js");
-  cp(portsFilePath, "./functions/render/port-data-source.js");
-  cp(portsFilePath, "./functions/server-render/port-data-source.js");
+  fs.copyFileSync(
+    renderFunctionFilePath,
+    "./functions/render/elm-pages-cli.js"
+  );
+  fs.copyFileSync(
+    renderFunctionFilePath,
+    "./functions/server-render/elm-pages-cli.js"
+  );
+  fs.copyFileSync(portsFilePath, "./functions/render/port-data-source.js");
+  fs.copyFileSync(
+    portsFilePath,
+    "./functions/server-render/port-data-source.js"
+  );
 
-  write("./functions/render/index.js", rendererCode(true, htmlTemplate));
-  write("./functions/server-render/index.js", rendererCode(false, htmlTemplate));
+  fs.writeFileSync(
+    "./functions/render/index.js",
+    rendererCode(true, htmlTemplate)
+  );
+  fs.writeFileSync(
+    "./functions/server-render/index.js",
+    rendererCode(false, htmlTemplate)
+  );
   // TODO rename functions/render to functions/fallback-render
   // TODO prepend instead of writing file
 
@@ -67,7 +75,7 @@ ${route.pathPattern}/content.dat /.netlify/functions/server-render 200`;
     apiRouteRedirects +
     "\n";
 
-  write("dist/_redirects", redirectsFile);
+  fs.writeFileSync("dist/_redirects", redirectsFile);
 }
 
 function ensureValidRoutePatternsForNetlify(apiRoutePatterns) {
@@ -97,7 +105,7 @@ function isServerSide(route) {
 function rendererCode(isOnDemand, htmlTemplate) {
   return `const path = require("path");
 const busboy = require("busboy");
-
+const htmlTemplate = ${JSON.stringify(htmlTemplate)};
 
 ${
   isOnDemand
@@ -108,8 +116,6 @@ exports.handler = builder(render);`
 
 exports.handler = render;`
 }
-
-const htmlTemplate = ${JSON.stringify(htmlTemplate)};
 
 
 /**
