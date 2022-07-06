@@ -9,5 +9,5 @@
   autoLaunch = true
   framework = "#custom"
 
-# [functions]
-#   external_node_modules = ["elm-pages"]
+[functions]
+  external_node_modules = ["@prisma/client"]
