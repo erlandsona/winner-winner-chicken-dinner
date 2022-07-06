@@ -1,4 +1,4 @@
-import { client as db } from './port-data.mjs'
+import { prisma as db } from './port-data.mjs'
 
 export async function handler() {
   try {
