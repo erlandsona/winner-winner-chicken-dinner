@@ -2,7 +2,7 @@ import { client as db } from './port-data.mjs'
 
 export async function handler() {
   try {
-    const results = await prisma.pollQuestion.findMany()
+    const results = await db.pollQuestion.findMany()
 
     return {
       statusCode: 200,
