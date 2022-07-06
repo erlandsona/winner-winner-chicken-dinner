@@ -1,6 +1,6 @@
-import { prisma as db } from './port-data.mjs'
+const { prisma: db } = require('./port-data.js')
 
-export async function handler() {
+exports.handler = async function handler() {
   try {
     const results = await db.pollQuestion.findMany()
 
