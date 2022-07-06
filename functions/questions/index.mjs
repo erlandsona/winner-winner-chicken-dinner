@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({ log: ["query"] })
+import { client as db } from './port-data.mjs'
 
 export async function handler() {
   try {
