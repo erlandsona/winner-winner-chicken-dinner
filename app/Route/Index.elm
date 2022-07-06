@@ -1,9 +1,13 @@
 module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
+import Api.Object.Poll
+import Api.Query
 import DataSource exposing (DataSource)
 import DataSource.Port as Port
 import Effect exposing (Effect)
 import ErrorPage exposing (ErrorPage)
+import Graphql.Operation exposing (RootQuery)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Head
 import Head.Seo as Seo
 import Html
@@ -13,7 +17,7 @@ import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path exposing (Path)
-import Question
+import Request.Hasura as DB
 import RouteBuilder exposing (StatefulRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
@@ -76,7 +80,7 @@ subscriptions maybePageUrl routeParams path sharedModel model =
 
 
 type alias Data =
-    { questions : List Question.Index }
+    { questions : List String }
 
 
 type alias ActionData =
@@ -85,14 +89,17 @@ type alias ActionData =
 
 data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
 data routeParams =
-    Request.succeed
-        (Port.get "questions_index"
-            Encode.null
-            (Decode.list Question.indexDecoder
-                |> Decode.map Data
+    Request.requestTime
+        |> Request.map
+            (\time ->
+                DB.dataSource time selection
+                    |> DataSource.map (Data >> Response.render)
             )
-            |> DataSource.map Response.render
-        )
+
+
+selection : SelectionSet (List String) RootQuery
+selection =
+    Api.Query.poll identity Api.Object.Poll.question
 
 
 action : RouteParams -> Request.Parser (DataSource (Response ActionData ErrorPage))
@@ -128,10 +135,6 @@ view maybeUrl sharedModel model static =
     { title = "🍗"
     , body =
         List.map
-            (\q ->
-                Html.div []
-                    [ Html.text q.question
-                    ]
-            )
+            (\q -> Html.div [] [ Html.text q ])
             static.data.questions
     }
