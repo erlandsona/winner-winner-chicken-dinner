@@ -1,21 +1,33 @@
-module Route.Hello.Id_ exposing (ActionData, Data, Model, Msg, route)
+module Route.Poll.New exposing (ActionData, Data, Model, Msg, route)
 
+import Api.Object.Poll
+import Api.Query
 import DataSource exposing (DataSource)
 import DataSource.Port as Port
+import Dict
 import Effect exposing (Effect)
 import ErrorPage exposing (ErrorPage)
+import Form.Value
+import Graphql.Operation exposing (RootQuery)
+import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Head
 import Head.Seo as Seo
+import Html
 import Json.Decode as Decode
 import Json.Encode as Encode
+import Pages.Field as Field
+import Pages.FieldRenderer as FieldView
+import Pages.Form as Form exposing (Form, HtmlForm)
 import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path exposing (Path)
+import Request.Hasura as DB
 import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
+import Validation exposing (Validation)
 import View exposing (View)
 
 
@@ -28,7 +40,7 @@ type Msg
 
 
 type alias RouteParams =
-    { id : String }
+    {}
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -73,13 +85,8 @@ subscriptions maybePageUrl routeParams path sharedModel model =
     Sub.none
 
 
-pages : DataSource (List RouteParams)
-pages =
-    DataSource.succeed []
-
-
 type alias Data =
-    String
+    {}
 
 
 type alias ActionData =
@@ -88,13 +95,7 @@ type alias ActionData =
 
 data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
 data routeParams =
-    Request.succeed
-        (Port.get "hello" (Encode.string routeParams.id) (Decode.maybe Decode.string)
-            |> DataSource.map
-                (Maybe.map Response.render
-                    >> Maybe.withDefault (Response.errorPage ErrorPage.notFound)
-                )
-        )
+    Request.succeed (DataSource.succeed (Response.render Data))
 
 
 action : RouteParams -> Request.Parser (DataSource (Response ActionData ErrorPage))
@@ -129,4 +130,6 @@ view :
     -> StaticPayload Data ActionData RouteParams
     -> View (Pages.Msg.Msg Msg)
 view maybeUrl sharedModel model static =
-    View.placeholder static.data
+    { title = "New Poll"
+    , body = []
+    }
