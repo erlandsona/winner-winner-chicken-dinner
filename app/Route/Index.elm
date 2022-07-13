@@ -1,15 +1,16 @@
 module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
-import Api.Object.Poll
-import Api.Query
+-- import Api.Object.Poll
+-- import Api.Query
+-- import Graphql.Operation exposing (RootQuery)
+-- import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
+
 import DataSource exposing (DataSource)
 import DataSource.Port as Port
 import Dict
 import Effect exposing (Effect)
 import ErrorPage exposing (ErrorPage)
 import Form.Value
-import Graphql.Operation exposing (RootQuery)
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Head
 import Head.Seo as Seo
 import Html
@@ -96,7 +97,7 @@ type alias ActionData =
 
 
 type alias Poll =
-    { id : Int
+    { id : String
     , question : String
     }
 
@@ -105,8 +106,18 @@ data : RouteParams -> Request.Parser (DataSource (Response Data ErrorPage))
 data routeParams =
     Request.requestTime
         |> Request.map
-            (\time ->
-                DB.dataSource time (Api.Query.poll identity (SelectionSet.map2 Poll Api.Object.Poll.id Api.Object.Poll.question))
+            (\_ ->
+                -- DB.dataSource time (Api.Query.poll identity (SelectionSet.map2 Poll Api.Object.Poll.id Api.Object.Poll.question))
+                Port.get "query"
+                    (Encode.string """
+                    select * from PollQuestion
+                    """)
+                    (Decode.list
+                        (Decode.map2 Poll
+                            (Decode.field "id" Decode.string)
+                            (Decode.field "question" Decode.string)
+                        )
+                    )
                     |> DataSource.map (Data >> Response.render)
             )
 
@@ -145,7 +156,7 @@ view maybeUrl sharedModel model static =
     , body =
         [ Html.ul []
             (List.map
-                (\p -> Route.Poll__Id___Edit { id = String.fromInt p.id } |> Route.link [] [ Html.text p.question ])
+                (\p -> Route.Poll__Id___Edit { id = p.id } |> Route.link [] [ Html.text p.question ])
                 static.data.polls
             )
         ]

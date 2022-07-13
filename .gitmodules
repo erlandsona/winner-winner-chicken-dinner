@@ -1,5 +1,5 @@
 [submodule "elm-pages"]
   path = elm-pages
-  url = https://github.com/erlandsona/elm-pages
+  url = https://github.com/dillonkearns/elm-pages
   branch = serverless-latest
 
