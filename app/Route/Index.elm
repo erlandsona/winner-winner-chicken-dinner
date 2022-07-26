@@ -10,6 +10,10 @@ import DataSource.Port as Port
 import Dict
 import Effect exposing (Effect)
 import ErrorPage exposing (ErrorPage)
+import Form
+import Form.Field as Field
+import Form.FieldView as FieldView
+import Form.Validation as Validation exposing (Combined, Field)
 import Form.Value
 import Head
 import Head.Seo as Seo
@@ -17,9 +21,6 @@ import Html
 import Html.Attributes as A
 import Json.Decode as Decode
 import Json.Encode as Encode
-import Pages.Field as Field
-import Pages.FieldRenderer as FieldView
-import Pages.Form as Form exposing (Form, HtmlForm)
 import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
@@ -30,7 +31,6 @@ import RouteBuilder exposing (StatefulRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
-import Validation exposing (Validation)
 import View exposing (View)
 
 

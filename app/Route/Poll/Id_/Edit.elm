@@ -7,6 +7,10 @@ import DataSource.Port as Port
 import Dict
 import Effect exposing (Effect)
 import ErrorPage exposing (ErrorPage)
+import Form exposing (HtmlForm)
+import Form.Field as Field
+import Form.FieldView as FieldView
+import Form.Validation as Validation exposing (Combined, Field)
 import Form.Value
 import Graphql.Operation exposing (RootQuery)
 import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
@@ -15,9 +19,6 @@ import Head.Seo as Seo
 import Html
 import Json.Decode as Decode
 import Json.Encode as Encode
-import Pages.Field as Field
-import Pages.FieldRenderer as FieldView
-import Pages.Form as Form exposing (Form, HtmlForm)
 import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
@@ -27,7 +28,6 @@ import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
-import Validation exposing (Validation)
 import View exposing (View)
 
 
@@ -160,28 +160,24 @@ type alias PollInput =
     { question : String }
 
 
-form : HtmlForm String PollInput String msg
+form : HtmlForm String PollInput String Msg
 form =
-    let
-        toPollInput : Form.ParsedField String String -> Validation String PollInput
-        toPollInput question =
-            Validation.succeed PollInput
-                |> Validation.withField question
-    in
     Form.init
-        toPollInput
-        (\formState question ->
-            ( []
-            , [ FieldView.input [] question
-              , Html.text
-                    (formState.errors
-                        |> Dict.get question.name
-                        |> Maybe.withDefault []
-                        |> String.concat
-                    )
-              , Html.button [] [ Html.text "Goooo!!!!" ]
-              ]
-            )
+        (\question ->
+            { combine =
+                Validation.succeed PollInput
+                    |> Validation.andMap question
+            , view =
+                \formState ->
+                    [ FieldView.input [] question
+                    , Html.text
+                        (formState.errors
+                            |> Form.errorsForField question
+                            |> String.concat
+                        )
+                    , Html.button [] [ Html.text "Goooo!!!!" ]
+                    ]
+            }
         )
         |> Form.field "question"
             (Field.text
@@ -199,12 +195,8 @@ view :
 view maybeUrl sharedModel model app =
     { title = "Edit Poll"
     , body =
-        [ Form.renderHtml
-            { method = Form.Post
-            , submitStrategy = Form.TransitionStrategy
-            }
-            app
-            app.data.question
-            form
+        [ form
+            |> Form.toDynamicTransition "edit-poll"
+            |> Form.renderHtml [] Nothing app app.data.question
         ]
     }
