@@ -1,12 +1,10 @@
-import mysql from "mysql2/promise";
-import dotenv from "dotenv";
+import { connect } from '@planetscale/database'
 
 
-export async function query(sql: string) {
+export async function query(sql: string, args: any[]) {
   // create the connection to database
-  dotenv.config()
-  const conn = await mysql.createConnection(process.env.DATABASE_URL!)
-  const [rows, _fields] = await conn.execute(sql)
+  const conn = connect({ url: process.env.DATABASE_URL })
+  const { rows } = await conn.execute(sql, args)
   return rows
 }
 
