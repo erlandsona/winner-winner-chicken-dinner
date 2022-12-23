@@ -5,27 +5,17 @@
   "scripts": {
     "postinstall": "bin/install-lamdera",
     "// Production Scripts": null,
-    "build": "run-s gen elm",
+    "build": "run-s elm",
     "serve": "run-s build server",
-    "server": "http-server ./dist -a localhost -p 3000 -c-1",
+    "server": "npx http-server ./dist -a localhost -p 3000 -c-1",
     "elm": "elm-pages build --keep-cache",
     "// Dev Scripts": null,
-    "start": "env-cmd run-s gen elm:dev",
-    "build:dev": "env-cmd run-s gen elm",
-    "elm:dev": "elm-pages dev --port 7373",
-    "// Code Gen": null,
-    "gen": "run-p gen:tailwind gen:graphql",
-    "gen:prisma": "prisma generate",
-    "gen:tailwind": "elm-tailwind-modules --dir ./gen --tailwind-config tailwind.config.js",
-    "gen:graphql": "elm-graphql https://living-dogfish-72.hasura.app/v1/graphql --header \"x-hasura-admin-secret: $HASURA_SECRET\" --output gen"
+    "elm:dev": "elm-pages dev --port 7373"
   },
   "author": "Dillon Kearns",
   "license": "BSD-3",
   "dependencies": {
-    "@planetscale/database": "^1.5.0",
-    "@prisma/client": "^4.0.0",
-    "dotenv": "^16.0.1",
-    "mysql2": "^2.3.3"
+    "@planetscale/database": "^1.5.0"
   },
   "devDependencies": {
     "@dillonkearns/elm-graphql": "^4.2.3",
@@ -43,5 +33,8 @@
     "postcss": "^8.4.5",
     "prisma": "^4.0.0",
     "tailwindcss": "^2.2.19"
+  },
+  "bin": {
+    "elm-pages": "./elm-pages/generator/src/cli.js"
   }
 }

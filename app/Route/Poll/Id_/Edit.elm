@@ -1,7 +1,5 @@
 module Route.Poll.Id_.Edit exposing (ActionData, Data, Model, Msg, route)
 
-import Api.Object.Poll
-import Api.Query
 import DataSource exposing (DataSource)
 import DataSource.Port as Port
 import Dict
@@ -12,8 +10,6 @@ import Form.Field as Field
 import Form.FieldView as FieldView
 import Form.Validation as Validation exposing (Combined, Field)
 import Form.Value
-import Graphql.Operation exposing (RootQuery)
-import Graphql.SelectionSet as SelectionSet exposing (SelectionSet)
 import Head
 import Head.Seo as Seo
 import Html
@@ -23,8 +19,7 @@ import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path exposing (Path)
-import Request.Hasura as DB
-import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
+import RouteBuilder exposing (StatefulRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
 import Shared
@@ -114,19 +109,11 @@ data routeParams =
                     void a =
                         void a
                 in
-                DB.dataSource time
-                    (Api.Query.poll_by_pk
-                        { id =
-                            case String.toInt routeParams.id of
-                                Just id ->
-                                    id
-
-                                Nothing ->
-                                    void "Not Found"
-                        }
-                        Api.Object.Poll.question
-                        |> SelectionSet.nonNullOrFail
-                    )
+                Port.get "query"
+                    (Encode.string """
+                    select * from PollQuestion limit 1
+                    """)
+                    (Decode.field "question" Decode.string)
                     |> DataSource.map (Data >> Response.render)
             )
 

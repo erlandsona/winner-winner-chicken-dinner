@@ -1,7 +1,5 @@
 module Route.Poll.New exposing (ActionData, Data, Model, Msg, route)
 
-import Api.Object.Poll
-import Api.Query
 import DataSource exposing (DataSource)
 import Dict
 import Effect exposing (Effect)
@@ -18,7 +16,6 @@ import Pages.Msg
 import Pages.PageUrl exposing (PageUrl)
 import Pages.Url
 import Path exposing (Path)
-import Request.Hasura as DB
 import RouteBuilder exposing (StatefulRoute, StatelessRoute, StaticPayload)
 import Server.Request as Request
 import Server.Response as Response exposing (Response)
