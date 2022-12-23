@@ -4,13 +4,15 @@
   "description": "Voting app built on elm-pages",
   "scripts": {
     "postinstall": "bin/install-lamdera",
+
+    "// Dev Scripts": null,
+    "start": "elm-pages dev --port 7373",
+
     "// Production Scripts": null,
     "build": "run-s elm",
     "serve": "run-s build server",
     "server": "npx http-server ./dist -a localhost -p 3000 -c-1",
-    "elm": "elm-pages build --keep-cache",
-    "// Dev Scripts": null,
-    "elm:dev": "elm-pages dev --port 7373"
+    "elm": "elm-pages build --keep-cache"
   },
   "author": "Dillon Kearns",
   "license": "BSD-3",

@@ -7,8 +7,3 @@ export async function query(sql: string, args: any[]) {
   const { rows } = await conn.execute(sql, args)
   return rows
 }
-
-// export async function questions_show(id: string) {
-//   const maybeData = await prisma.pollQuestion.findFirst({ where: { id: id } })
-//   return (maybeData || null)
-// }
